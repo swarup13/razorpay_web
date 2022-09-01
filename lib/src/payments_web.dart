@@ -4,8 +4,8 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:razorpay_web/src/ui/ui_fake.dart' if (dart.library.html) 'package:razorpay_web/src/ui/ui_real.dart'
-    as ui;
+import 'package:razorpay_web/src/ui/ui_fake.dart'
+    if (dart.library.html) 'package:razorpay_web/src/ui/ui_real.dart' as ui;
 import 'package:universal_html/html.dart' as html;
 
 import 'rzp_models.dart';
@@ -24,7 +24,10 @@ class RazorpayWeb extends StatefulWidget {
       required this.onPaymentError,
       this.rzpSecret,
       Key? key})
-      : assert(options.generateOrderId == true ? (rzpSecret != null && options.corsUrl != null) : true,
+      : assert(
+            options.generateOrderId == true
+                ? (rzpSecret != null && options.corsUrl != null)
+                : true,
             'Razorpay secret key and Cors Url is required for generating order id'),
         super(key: key);
 
@@ -38,8 +41,11 @@ class _RazorpayWebState extends State<RazorpayWeb> {
   void initState() {
     super.initState();
     if (widget.options.generateOrderId) {
-      if (widget.options.corsUrl == null || widget.rzpSecret == null || widget.options.corsUrl!.isEmpty) {
-        throw Exception('Razorpay secret key and Cors Url is required for generating order id');
+      if (widget.options.corsUrl == null ||
+          widget.rzpSecret == null ||
+          widget.options.corsUrl!.isEmpty) {
+        throw Exception(
+            'Razorpay secret key and Cors Url is required for generating order id');
       }
       getOrderId(widget.options).then((value) {
         if (value != null) {
@@ -121,7 +127,8 @@ class _RazorpayWebState extends State<RazorpayWeb> {
                 return kIsWeb
                     // ignore: prefer_const_constructors
                     ? HtmlElementView(viewType: 'rzp-html')
-                    : const Center(child: Text("Not Supported on this platform"));
+                    : const Center(
+                        child: Text("Not Supported on this platform"));
               })
             : const Center(
                 child: CircularProgressIndicator(),
@@ -138,9 +145,10 @@ class _RazorpayWebState extends State<RazorpayWeb> {
       'amount': options.amount,
       'currency': "INR",
     };
-    var auth = 'Basic ' + base64Encode(utf8.encode('${widget.rzpKey}:${widget.rzpSecret}'));
+    var auth =
+        'Basic ${base64Encode(utf8.encode('${widget.rzpKey}:${widget.rzpSecret}'))}';
     Uri uri = kIsWeb
-        ? Uri.parse(options.corsUrl! + "https://api.razorpay.com/v1/orders")
+        ? Uri.parse("${options.corsUrl!}https://api.razorpay.com/v1/orders")
         : Uri.parse("https://api.razorpay.com/v1/orders");
 
     var client = http.Client();

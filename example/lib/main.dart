@@ -46,11 +46,11 @@ class MyApp extends StatelessWidget {
           colorhex: "#FF0000",
         ),
         onPaymentSuccess: (String paymentId) {
-          print("Payment Success");
+          debugPrint("Payment Success");
           log(paymentId);
         },
         onPaymentError: (String error) {
-          print("Payment Error");
+          debugPrint("Payment Error");
         },
       ),
     );
